@@ -1,13 +1,13 @@
 <?php
 //ファンクション読み込み
-require_once("./func_login.php");
+require_once("./login/func_login.php");
 //ログインのチェックファンクション
 LogINCheck();
 function h($v){
     return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
 }
 //変数の準備
-$FILE = $_SESSION['db_user'].'.txt';  //chenge username
+$FILE = './log/'.$_SESSION['db_user'].'.txt';  //chenge username
 $id = uniqid(); 
 
 //タイムゾーン
@@ -24,9 +24,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $day = $_POST['day'];
         $DATA = [$id, $date, $text,$day];
         $BOARD[] = $DATA;
-
     file_put_contents($FILE, json_encode($BOARD));
-
 }else if(isset($_POST['del'])){
     $NEWBOARD = [];
     foreach($BOARD as $DATA){
@@ -76,7 +74,7 @@ exit;
             </td>
             <?php
             $date_f = new DateTime($DATA[3]);
-            if((date_format($date_f,'Ymd')-date('Ymd'))==1){
+            if((date_format($date_f,'Ymd')-date('Ymd'))==0){
                 echo "<td>"."今日中にやる。"."</td>";
             }elseif((date_format($date_f,'Ymd')-date('Ymd'))<1){
                 echo "<td>"."時間切れです。"."</td>";
@@ -89,14 +87,15 @@ exit;
 
             <td>
                 <input type= "hidden" name= "del" value= "<?php echo $DATA[0]; ?>">
-                <input type= "submit" style="margin:10px;" value= "完了">
+                <input type= "submit" style="margin:10px;" value= "削除">
             </td>
+
         </form>
         </tr>
         <?php endforeach; ?>
         </table>
     </section>
-    <p><a href='./logout.php'>ログアウト</a></p>
+    <p><a href='./login/logout.php'>ログアウト</a></p>
     </center>
 </body>
 </html>

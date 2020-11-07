@@ -1,5 +1,5 @@
 <?php
-$file = './login.txt';
+$file = '../log/login.txt';
 $user_data = ''; 
 $tmp = "";
 if(file_exists($file)){
@@ -14,6 +14,6 @@ if(!empty(hash("sha256",$_POST["db_user"]))&&!empty(hash("sha256",$_POST["db_pas
   $tmp .= "\n";
   file_put_contents($file,$tmp);
 }
-header("Location:login.php");
+header("Location:../login.php");
 exit;
 ?>

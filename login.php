@@ -1,9 +1,9 @@
 <?php 
 //ファンクション読み込み
 
-require_once("./func_login.php");
+require_once("./login/func_login.php");
 
-$data = file_get_contents("login.txt");
+$data = file_get_contents("./log/login.txt");
 $data = explode( "\n", $data);
 $cnt = count($data);
 
@@ -35,7 +35,6 @@ if(isset($_POST["user_id"])&&isset($_POST["pass_id"])){
 <body>
 <center>
 <h1>ログイン</h1>
-<p>	ユーザー名とパスワードを入力してください。</p>
 <p><?php
 	if(isset($msg)){
 		echo $msg;
@@ -56,7 +55,7 @@ if(isset($_POST["user_id"])&&isset($_POST["pass_id"])){
 			<td><input type="submit" value="ログイン"></td>
 		</tr>
 	</table>
-	<a href='new_user.html'>新規ユーザー</a>
+	<a href='new_user.php'>新規ユーザー</a>
 </form>
 <br><br><br>
 テスト用ユーザー名 : testuser<br>

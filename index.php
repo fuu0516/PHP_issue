@@ -96,7 +96,7 @@ exit;
         <?php endforeach; ?>
         </table>
     </section>
-    <p><a href='./login/logout.php'>ログアウト</a></p>
+    <p><a href='./logout.php'>ログアウト</a></p>
     </center>
 </body>
 </html>

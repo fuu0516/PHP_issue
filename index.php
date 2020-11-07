@@ -6,18 +6,30 @@ LogINCheck();
 function h($v){
     return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
 }
+
+
+
 //変数の準備
 $FILE = './log/'.$_SESSION['db_user'].'.txt';  //chenge username
+$CLEAR_FILE = './log/clear_'.$_SESSION['db_user'].'.txt';  //chenge username
 $id = uniqid(); 
 
 //タイムゾーン
 date_default_timezone_set('Asia/Tokyo');
 $date = date('Y年m月d日H時i分'); //日時（年/月/日/ 時:分）
-$text = '';$DATA = [];$BOARD = []; 
+$text = '';$DATA = [];$BOARD = []; $CLEARBOARD = [];
 
 if(file_exists($FILE)) {
-    $BOARD = json_decode(file_get_contents($FILE));
+    print_r($BOARD = json_decode(file_get_contents($FILE)));
 }
+if(!file_exists($CLEAR_FILE)){
+    touch($CLEAR_FILE);
+}
+if(file_exists($CLEAR_FILE)) {
+    echo "<br>"."CLEARBOARD = ";
+    print_r($CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE)));
+}
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(!empty($_POST['txt'] && !empty($_POST['day']))){
         $text = $_POST['txt'];
@@ -32,6 +44,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $NEWBOARD[] = $DATA;
         }
     }
+    file_put_contents($FILE, json_encode($NEWBOARD));
+}
+
+if(isset($_POST['clear'])){
+    $NEWBOARD = [];
+    $NEWCLEARBOAD = [];
+    foreach ($BOARD as $DATA) {
+        if($DATA[0] == $_POST['clear']){
+            // array_push($CLEARBOARD,$DATA);
+            array_push($DATA,$date);
+            $CLEARBOARD[] = $DATA;
+        }
+    }
+    
+    foreach($BOARD as $DATA){
+        if($DATA[0] !== $_POST['clear']){
+            $NEWBOARD[] = $DATA;
+        }
+    }
+    file_put_contents($CLEAR_FILE, json_encode($CLEARBOARD));
     file_put_contents($FILE, json_encode($NEWBOARD));
 }
 
@@ -52,7 +84,6 @@ exit;
     <h1></h1>
     <section class= "main">
         <h1>やることシステム</h1>
-
         <form style="margin: 30px;" method= "post">
             <input type= "text" name= "txt">を
             <input type="date" name= "day">日にやる。<br><br>
@@ -79,22 +110,31 @@ exit;
             }elseif((date_format($date_f,'Ymd')-date('Ymd'))<1){
                 echo "<td>"."時間切れです。"."</td>";
             }else{
-            echo "<td>"."あと";
+            echo "<td>"."残りあと";
             echo date_format($date_f,'Ymd')-date('Ymd');
             echo "日"."</td>";
             }
             ?>
-
+        </form>
+        <form method= "post">
+            <td>
+                <input type= "hidden" name= "clear" value= "<?php echo $DATA[0]; ?>">
+                <input type= "submit" style="margin:10px;" value= "達成">
+            </td>
+        </form>
+        <form action="post"></form>
             <td>
                 <input type= "hidden" name= "del" value= "<?php echo $DATA[0]; ?>">
                 <input type= "submit" style="margin:10px;" value= "削除">
             </td>
-
         </form>
+
         </tr>
         <?php endforeach; ?>
         </table>
     </section>
+    <a href="./clear_index.php">達成一覧</a>
+    <br>
     <p><a href='./login/logout.php'>ログアウト</a></p>
     </center>
 </body>

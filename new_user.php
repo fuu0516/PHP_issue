@@ -8,7 +8,7 @@
 </head>
 <body>
   <center>
-  <form method="POST" action="new_user_save.php">
+  <form method="POST" action="./login/new_user_save.php">
     <h1>新規登録</h1>
     <p>ユーザーID</p>
     <input type="text" name="db_user">

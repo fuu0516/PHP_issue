@@ -3,5 +3,5 @@
 require_once("./func_login.php");
 //セッションを破壊
 session_destroy();
-header("Location:login.php");
+header("Location:../login.php");
 ?>

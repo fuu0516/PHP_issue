@@ -7,9 +7,6 @@ function h($v){
     return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
 }
 
-
-
-
 $FILE = './log/'.$_SESSION['db_user'].'.txt';  
 $CLEAR_FILE = './log/clear_'.$_SESSION['db_user'].'.txt';  
 $id = uniqid(); 
@@ -21,12 +18,19 @@ $text = '';$DATA = [];$BOARD = []; $CLEARBOARD = [];
 
 if(file_exists($FILE)) {
     $BOARD = json_decode(file_get_contents($FILE));
+    // print_r($BOARD);
+    foreach((array) $BOARD as $key => $value){
+        $sort[$key] = $value['3'];
+    }
+    array_multisort($sort, SORT_ASC, $BOARD);
+    // print_r($BOARD);
 }
 if(!file_exists($CLEAR_FILE)){
     touch($CLEAR_FILE);
 }
 if(file_exists($CLEAR_FILE)) {
     $CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE));
+    // print_r();
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -114,13 +118,17 @@ exit;
             }
             ?>
         </form>
+        <?php if((date_format($date_f,'Ymd')-date('Ymd'))>0){ ?>
         <form method= "post">
             <td>
                 <input type= "hidden" name= "clear" value= "<?php echo $DATA[0]; ?>">
                 <input type= "submit" style="margin:10px;" value= "達成">
             </td>
         </form>
-
+        <?php }else{ ?>
+            <td>
+            </td>
+        <?php }?>
         <form method="post">
             <td>
                 <input type= "hidden" name= "del" value= "<?php echo $DATA[0]; ?>">

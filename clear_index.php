@@ -7,11 +7,9 @@ function h($v){
     return htmlspecialchars($v, ENT_QUOTES, 'UTF-8');
 }
 
-//変数の準備
-$CLEAR_FILE = './log/clear_'.$_SESSION['db_user'].'.txt';  //chenge username
+$CLEAR_FILE = './log/clear_'.$_SESSION['db_user'].'.txt'; 
 
 
-//タイムゾーン
 date_default_timezone_set('Asia/Tokyo');
 $date = date('Y年m月d日H時i分'); //日時（年/月/日/ 時:分）
 $text = '';$DATA = [];$BOARD = []; $CLEARBOARD = [];
@@ -20,8 +18,7 @@ if(!file_exists($CLEAR_FILE)){
     touch($CLEAR_FILE);
 }
 if(file_exists($CLEAR_FILE)) {
-    echo "<br>"."CLEARBOARD = ";
-    print_r($CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE)));
+    $CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE));
 }
 
 ?>

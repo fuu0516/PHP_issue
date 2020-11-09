@@ -9,25 +9,24 @@ function h($v){
 
 
 
-//変数の準備
-$FILE = './log/'.$_SESSION['db_user'].'.txt';  //chenge username
-$CLEAR_FILE = './log/clear_'.$_SESSION['db_user'].'.txt';  //chenge username
+
+$FILE = './log/'.$_SESSION['db_user'].'.txt';  
+$CLEAR_FILE = './log/clear_'.$_SESSION['db_user'].'.txt';  
 $id = uniqid(); 
 
-//タイムゾーン
+
 date_default_timezone_set('Asia/Tokyo');
 $date = date('Y年m月d日H時i分'); //日時（年/月/日/ 時:分）
 $text = '';$DATA = [];$BOARD = []; $CLEARBOARD = [];
 
 if(file_exists($FILE)) {
-    print_r($BOARD = json_decode(file_get_contents($FILE)));
+    $BOARD = json_decode(file_get_contents($FILE));
 }
 if(!file_exists($CLEAR_FILE)){
     touch($CLEAR_FILE);
 }
 if(file_exists($CLEAR_FILE)) {
-    echo "<br>"."CLEARBOARD = ";
-    print_r($CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE)));
+    $CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE));
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -38,20 +37,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $BOARD[] = $DATA;
     file_put_contents($FILE, json_encode($BOARD));
 }else if(isset($_POST['del'])){
-    //削除ボタンが押された場合
-
-    //新しい全体配列を作る
     $NEWBOARD = [];
-
-    //削除ボタンが押されるとき、すでに$BOARDは存在している
     foreach($BOARD as $DATA){
-        //$_POST['del']には各々のidが入っている
-        //保存しようとしている$DATA[0]が送信されてきたidと等しくないときだけ配列に入れる
         if($DATA[0] !== $_POST['del']){
             $NEWBOARD[] = $DATA;
         }
     }
-    //全体配列をファイルに保存する
     file_put_contents($FILE, json_encode($NEWBOARD));
 }
 
@@ -60,7 +51,6 @@ if(isset($_POST['clear'])){
     $NEWCLEARBOAD = [];
     foreach ($BOARD as $DATA) {
         if($DATA[0] == $_POST['clear']){
-            // array_push($CLEARBOARD,$DATA);
             array_push($DATA,$date);
             $CLEARBOARD[] = $DATA;
         }
@@ -83,9 +73,9 @@ exit;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
     <center>

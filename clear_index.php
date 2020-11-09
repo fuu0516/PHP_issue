@@ -20,8 +20,7 @@ if(!file_exists($CLEAR_FILE)){
     touch($CLEAR_FILE);
 }
 if(file_exists($CLEAR_FILE)) {
-    echo "<br>"."CLEARBOARD = ";
-    print_r($CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE)));
+    $CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE));
 }
 
 ?>

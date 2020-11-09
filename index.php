@@ -20,14 +20,13 @@ $date = date('Y年m月d日H時i分'); //日時（年/月/日/ 時:分）
 $text = '';$DATA = [];$BOARD = []; $CLEARBOARD = [];
 
 if(file_exists($FILE)) {
-    print_r($BOARD = json_decode(file_get_contents($FILE)));
+    $BOARD = json_decode(file_get_contents($FILE));
 }
 if(!file_exists($CLEAR_FILE)){
     touch($CLEAR_FILE);
 }
 if(file_exists($CLEAR_FILE)) {
-    echo "<br>"."CLEARBOARD = ";
-    print_r($CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE)));
+    $CLEARBOARD = json_decode(file_get_contents($CLEAR_FILE));
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){

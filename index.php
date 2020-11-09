@@ -113,7 +113,7 @@ exit;
                 echo "<td>"."時間切れです。"."</td>";
             }else{
             echo "<td>"."残りあと";
-            echo date_format($date_f,'Ymd')-date('Ymd');
+            echo date_format($date_f,'Ymd')-date('Ymd')+1;
             echo "日"."</td>";
             }
             ?>

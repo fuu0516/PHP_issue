@@ -38,12 +38,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $BOARD[] = $DATA;
     file_put_contents($FILE, json_encode($BOARD));
 }else if(isset($_POST['del'])){
+    //削除ボタンが押された場合
+
+    //新しい全体配列を作る
     $NEWBOARD = [];
+
+    //削除ボタンが押されるとき、すでに$BOARDは存在している
     foreach($BOARD as $DATA){
+        //$_POST['del']には各々のidが入っている
+        //保存しようとしている$DATA[0]が送信されてきたidと等しくないときだけ配列に入れる
         if($DATA[0] !== $_POST['del']){
             $NEWBOARD[] = $DATA;
         }
     }
+    //全体配列をファイルに保存する
     file_put_contents($FILE, json_encode($NEWBOARD));
 }
 
@@ -67,7 +75,7 @@ if(isset($_POST['clear'])){
     file_put_contents($FILE, json_encode($NEWBOARD));
 }
 
-header('Location: '.$_SERVER['SCRIPT_NAME']);
+header("Location:index.php");
 exit;
 }
 ?>
@@ -122,7 +130,8 @@ exit;
                 <input type= "submit" style="margin:10px;" value= "達成">
             </td>
         </form>
-        <form action="post"></form>
+
+        <form method="post">
             <td>
                 <input type= "hidden" name= "del" value= "<?php echo $DATA[0]; ?>">
                 <input type= "submit" style="margin:10px;" value= "削除">
